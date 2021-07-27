@@ -29,7 +29,6 @@ set :linked_file, fetch(:linked_files, []).push('config/application.yml')
 set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system', 'public/uploads')
 set :passenger_restart_with_touch, true
 set :passenger_restart_command, '/usr/bin/passenger-config restart-app'
-set :git_branch, run_locally('git rev-parse --abbrev-ref HEAD')
 
 # Default value for linked_dirs is []
 # append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"
