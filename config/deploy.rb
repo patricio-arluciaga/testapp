@@ -47,16 +47,17 @@ set :keep_releases, 5
 
 namespace :deploy do
   desc "Create a RELEASE file with the branch name"
-  set :git_branch, nil
   before :starting, :add_release_file
-  task :add_release_file do
+  task :get_branch_name do
     run_locally do
-      git_branch = `git rev-parse --abbrev-ref HEAD`.chomp
+      set :git_branch, `git rev-parse --abbrev-ref HEAD`.chomp
     end
+  end
+  task :add_release_file do
+    invoke "deploy:get_branch_name"
     on release_roles(:all) do
       within release_path do
         execute :echo, "\"#{git_branch}\" > #{deploy_path.join('RELEASE')}"
-
       end
     end
   end
