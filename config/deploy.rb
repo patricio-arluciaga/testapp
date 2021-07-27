@@ -7,7 +7,7 @@ set :application, "testapp"
 set :repo_url, "https://github.com/patricio-arluciaga/testapp.git"
 
 # Default branch is :master
-ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
+# ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 
 # Default deploy_to directory is /var/www/my_app_name
 # set :deploy_to, "/var/www/my_app_name"
@@ -27,8 +27,8 @@ ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 
 set :linked_file, fetch(:linked_files, []).push('config/application.yml')
 set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system', 'public/uploads')
-
-# set :passenger_restart_command, '/usr/bin/passenger-config restart-app'
+set :passenger_restart_with_touch, true
+set :passenger_restart_command, '/usr/bin/passenger-config restart-app'
 
 # Default value for linked_dirs is []
 # append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"
