@@ -50,9 +50,12 @@ namespace :deploy do
   desc "Create a RELEASE file with the branch name"
   before :starting, :add_release_file
   task :add_release_file do
+    run_locally do
+      git_branch = `git rev-parse --abbrev-ref HEAD`.chomp
+    end
     on release_roles(:all) do
       within release_path do
-        execute :echo, "\"#{fetch(:git_branch).chomp}\" > #{deploy_path.join('RELEASE')}"
+        execute :echo, "\"#{git_branch}\" > #{deploy_path.join('RELEASE')}"
 
       end
     end
