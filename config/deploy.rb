@@ -7,7 +7,7 @@ set :application, "testapp"
 set :repo_url, "https://github.com/patricio-arluciaga/testapp.git"
 
 # Default branch is :master
-# ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
+ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 
 # Default deploy_to directory is /var/www/my_app_name
 # set :deploy_to, "/var/www/my_app_name"
@@ -28,7 +28,7 @@ set :repo_url, "https://github.com/patricio-arluciaga/testapp.git"
 set :linked_file, fetch(:linked_files, []).push('config/application.yml')
 set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system', 'public/uploads')
 
-set :passenger_restart_command, '/usr/bin/passenger-config restart-app'
+# set :passenger_restart_command, '/usr/bin/passenger-config restart-app'
 
 # Default value for linked_dirs is []
 # append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"
@@ -45,16 +45,14 @@ set :deploy_to, "/home/parluciaga/testapp-deploy"
 # Default value for keep_releases is 5
 set :keep_releases, 5
 
-# Uncomment the following to require manually verifying the host key before first deploy.
-# set :ssh_options, verify_host_key: :secure
-namespace :deploy do 
-  before :restart, :add_release_file
+namespace :deploy do
+  desc "Create a RELEASE file with the branch name"
+  before :starting, :add_release_file
   task :add_release_file do
-    on roles(:app) do
-      within current_path do
-        execute(:git, :'rev-parse', :'--abbrev-ref', :'HEAD', ">#{deploy_to}/RELEASE")
+    on release_roles(:all) do
+      within release_path do
+        execute :echo, "\"#{fetch(:branch)}\" > RELEASE"
       end
     end
   end
 end
-
