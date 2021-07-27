@@ -57,7 +57,7 @@ namespace :deploy do
 #    invoke "deploy:get_branch_name"
     on release_roles(:all) do
       within release_path do
-        execute :echo, "\"#{fetch(:git_branch).chomp}\" > #{deploy_path.join('RELEASE')}"
+        execute :echo, "\"#{fetch(:git_branch).chomp}\" > #{set_release_path.join('RELEASE')}"
       end
     end
   end
