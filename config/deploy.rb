@@ -44,20 +44,20 @@ set :deploy_to, "/home/parluciaga/testapp-deploy"
 
 # Default value for keep_releases is 5
 set :keep_releases, 5
-
+set :git_branch, %x( git rev-parse --abbrev-ref HEAD )
 namespace :deploy do
   desc "Create a RELEASE file with the branch name"
   before :starting, :add_release_file
-  task :get_branch_name do
-    run_locally do
-      set :git_branch, `git rev-parse --abbrev-ref HEAD`.chomp
-    end
-  end
+#  task :get_branch_name do
+#    run_locally do
+#      set :git_branch, `git rev-parse --abbrev-ref HEAD`.chomp
+#    end
+#  end
   task :add_release_file do
-    invoke "deploy:get_branch_name"
+#    invoke "deploy:get_branch_name"
     on release_roles(:all) do
       within release_path do
-        execute :echo, "\"#{:git_branch}\" > #{deploy_path.join('RELEASE')}"
+        execute :echo, "\"#{fetch(:git_branch).chomp}\" > #{deploy_path.join('RELEASE')}"
       end
     end
   end
