@@ -57,7 +57,7 @@ namespace :deploy do
     invoke "deploy:get_branch_name"
     on release_roles(:all) do
       within release_path do
-        execute :echo, "\"#{git_branch}\" > #{deploy_path.join('RELEASE')}"
+        execute :echo, "\"#{:git_branch}\" > #{deploy_path.join('RELEASE')}"
       end
     end
   end
