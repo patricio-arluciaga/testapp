@@ -44,10 +44,10 @@ set :deploy_to, "/home/parluciaga/testapp-deploy"
 
 # Default value for keep_releases is 5
 set :keep_releases, 5
-set :git_branch, nil
 
 namespace :deploy do
   desc "Create a RELEASE file with the branch name"
+  set :git_branch, nil
   before :starting, :add_release_file
   task :add_release_file do
     run_locally do
