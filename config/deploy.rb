@@ -43,7 +43,18 @@ set :bundle_flags, nil
 set :deploy_to, "/home/parluciaga/testapp-deploy"
 
 # Default value for keep_releases is 5
-# set :keep_releases, 5
+set :keep_releases, 5
 
 # Uncomment the following to require manually verifying the host key before first deploy.
 # set :ssh_options, verify_host_key: :secure
+namespace :deploy do 
+  before :restart, :add_release_file
+  task :add_release_file do
+    on roles(:app) do
+      within current_path do
+        execute(:git, :'rev-parse', :'--abbrev-ref', :'HEAD', ">#{deploy_to}/RELEASE")
+      end
+    end
+  end
+end
+
