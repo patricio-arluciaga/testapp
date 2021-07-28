@@ -7,7 +7,7 @@ set :application, "testapp"
 set :repo_url, "https://github.com/patricio-arluciaga/testapp.git"
 
 # Default branch is :master
-# ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
+ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 
 # Default deploy_to directory is /var/www/my_app_name
 # set :deploy_to, "/var/www/my_app_name"
@@ -47,7 +47,6 @@ set :keep_releases, 5
 set :git_branch, %x( git rev-parse --abbrev-ref HEAD )
 namespace :deploy do
   desc "Create a RELEASE file with the branch name"
-  before :starting, :add_release_file
 #  task :get_branch_name do
 #    run_locally do
 #      set :git_branch, `git rev-parse --abbrev-ref HEAD`.chomp
@@ -62,3 +61,5 @@ namespace :deploy do
     end
   end
 end
+
+after 'deploy:published', 'deploy:add_release_file'
